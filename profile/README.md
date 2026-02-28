@@ -16,7 +16,7 @@ Blending ancient knowledge with emerging tech. Australia.
 | [KindField](https://github.com/KindPath-Collective/KindField) | Epistemological foundation for all KindPath skills |
 | [kindpath-fieldkit](https://github.com/KindPath-Collective/kindpath-fieldkit) | Whitepaper, field kit, and pilot implementation guide |
 | [KPTH](https://github.com/KindPath-Collective/KPTH) | Core platform (data capture, digital library, ecological eval) |
-| [KindEarth](https://github.com/KindPath-Collective/KindEarth) | Non-reductive relational analysis engine |
+| [KindSense](https://github.com/KindPath-Collective/KindSense) | Non-reductive relational analysis engine |
 | [kindpath-dfte](https://github.com/KindPath-Collective/kindpath-dfte) | Dual Field Trading Engine (KEPE + BMR) |
 | [kindpath-analyser](https://github.com/KindPath-Collective/kindpath-analyser) | Frequency field scientist + creative seedbank |
 | [kindpath-q](https://github.com/KindPath-Collective/kindpath-q) | Audio analysis plugin (AU/VST3) |
