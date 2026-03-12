@@ -100,50 +100,76 @@ python3 ~/.kindpath/kp_memory.py dump --domain gotcha
 
 ---
 
-## Known Gotchas
+## Agent Team Delegation
 
-1. Two kindai dirs: `/Users/sam/kindai` (prod) ≠ `/Users/sam/dev/KindPath-Collective/kindai` (dev)
-2. Electron ROOT always resolves to `/Users/sam/kindai` regardless of what you're editing
-3. Cloud Run Alembic "database does not exist" errors in old logs → STALE, ignore
-4. `gcloud builds submit` SHORT_SHA → from dev repo, not production dir
-5. kindpath-bmr is archived on GitHub — check before pushing
+For focused work, delegate to the specialist team agents in `.github/agents/`:
+
+| Use This Agent | For This Work |
+|---------------|---------------|
+| `Oversight` | Doctrine check, drift prevention, session close audit |
+| `Testing` | Write tests, fix test failures, CI setup |
+| `Research` | Library research, PR status, GitHub Education, benchmarks |
+| `KindAI Dev` | kindai CLI/workspace/Electron/NDIS tasks |
+| `DFTE Engine` | kindpath-dfte orchestrator, KEPE indicators, backtest |
+| `Analyser` | kindpath-analyser modules, audio pipeline, seedbank |
+| `KindPath Q` | JUCE C++ plugin, CMake, DSP engine, UI panels |
+
+### Paperclip Coordination
+
+Tasks are tracked in Paperclip (LaunchAgent: `com.kindai.paperclip`).
+Each team should have a Paperclip project:
+
+```bash
+# Create team project boards via kindai scripts
+python3 /Users/sam/dev/KindPath-Collective/kindai/scripts/seed_kindpath_projects.py
+```
+
+### Parallel Agent Pattern
+
+For independent tasks across repos, use `runSubagent` in parallel:
+```
+"Launch Testing agent for analyser tests AND Research agent for PR status simultaneously"
+```
 
 ---
 
-## Working Principles
+## Known Gotchas (current)
 
-- Keep things simple and clean
-- Ask Sam or check existing code/docs if unsure — don't guess
-- Use parallel subagents for independent tasks
-- Build out in full — no partial implementations
-- Be efficient: read enough context to act, then act
+1. Two kindai dirs: `/Users/sam/kindai` (prod) ≠ `/Users/sam/dev/KindPath-Collective/kindai` (dev)
+2. Electron ROOT always resolves to `/Users/sam/kindai` regardless of what you're editing
+3. Cloud Run Alembic errors in old logs → STALE, ignore
+4. `gcloud builds submit` SHORT_SHA → from dev repo, not prod dir
+5. kindpath-bmr is archived on GitHub — check before pushing
+6. **NEVER** use `python3 -c` multiline in terminal → dquote corruption. Use /tmp/script.py
+7. MCP tools: uses `/usr/local/bin/github-mcp-wrapper` (binary at `~/go/bin/github-mcp-server`)
+8. C3-wire (forgazi→orchestrator) is **already done** at orchestrator.py line 510
+9. D3+D4 (kindpath-q wiring) **already done** — commit 2807dce
+10. E4 (analyser tests) **already done** — 247 passed, use `./venv/bin/pytest`
 
 ---
 
 ## Active Todos (always check HANDOVER.md for current state)
 
+```bash
+cat ~/.kindpath/HANDOVER.md
+```
+
 Blocked on Sam:
 - GitHub→Cloud Build trigger (browser OAuth needed)
-- kindpath-bmr unarchive on GitHub
+- kindai .env: add ANTHROPIC_API_KEY, OPENAI_API_KEY, JWT_SECRET
 
 Next code work:
+- B1-wire: tab_scout.py → real KEPE syntropic_coeff
 - D5: Spectral Coherence → BMR scale mapping
-- D6: Visual Resonance Overlay in kindai Electron app
-- E2: Whitepaper update (week-2 farm realisations)
-- E4: kindpath-analyser full test suite
-
-Wiring gaps (code exists, needs connection):
-- B1-B3: tab_scout/opportunity_scout → DFTE + KB
-- C1-C4: FRED, wisdom engine multi-symbol, forgazi, relational_timestamp
+- D6: Visual Resonance Overlay in Electron
 
 ---
 
 ## Session Close
 
 ```bash
-python3 ~/.kindpath/kp_session.py todo-done "description of what was completed"
-python3 ~/.kindpath/kp_session.py todo-add  "New thing discovered"
-python3 ~/.kindpath/kp_session.py end "Summary of session accomplishments"
+python3 ~/.kindpath/kp_memory.py remember "fact" --domain gotcha --tags repo,topic
+python3 ~/.kindpath/kp_session.py end "Summary"
 ```
 
-Keep `~/.kindpath/HANDOVER.md` as the single source of truth for todos. Never create a separate TODO file.
+Keep `~/.kindpath/HANDOVER.md` as the single source of truth. Never create a separate TODO file.
