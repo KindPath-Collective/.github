@@ -111,6 +111,26 @@ python3 ~/.kindpath/kp_memory.py remember "fact" --domain gotcha|technical|proje
 
 ---
 
+## Tool Reliability
+
+Some tools behave unexpectedly in this environment. Know the patterns:
+
+| Tool / Pattern | Problem | Solution |
+|----------------|---------|----------|
+| `run_in_terminal` with heredoc (`<< 'EOF'`) | Terminal "simplifies" the command — heredoc is corrupted or interleaved | Write to `/tmp/script.py` via `create_file`, then `run_in_terminal python3 /tmp/script.py` |
+| `python3 -c "..."` multiline | Same corruption | Same — use file |
+| `mcp_github_*` tools | Deferred tools; sometimes unavailable or fail silently | Use `gh` CLI: `gh issue`, `gh pr`, `gh run list`, `gh api` |
+| `run_in_terminal` large output | Returns a file path reference instead of inline output | Use `read_file` on the provided path |
+| Sequential single-file edits | Slow and easy to lose context | Use `multi_replace_string_in_file` for all multi-edit operations |
+| Editing HANDOVER.md via Python script | Fragile — goes wrong with heredoc corruption | Use `replace_string_in_file` directly on `~/.kindpath/HANDOVER.md` |
+| `grep_search` for unknown locations | Slow when file location is unknown | Use `semantic_search` first to locate, then confirm with `grep_search` |
+
+**Paperclip task routing:** Every task must have a Paperclip ticket in the correct project
+before work begins. See `kindpath.agent.md` → "Paperclip Task Routing" for project map and API.
+If Paperclip isn't running: `npx paperclipai start` then seed with `python3 kindai/scripts/seed_kindpath_projects.py`.
+
+---
+
 ## Project Rules
 
 - Follow KindPath doctrine: benevolence, syntropy, sovereignty
