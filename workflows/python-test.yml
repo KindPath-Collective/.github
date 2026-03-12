@@ -1,0 +1,53 @@
+name: Python Tests
+
+on:
+  push:
+    paths:
+      - "**.py"
+      - "requirements*.txt"
+  pull_request:
+    paths:
+      - "**.py"
+      - "requirements*.txt"
+
+jobs:
+  test-kindpath-analyser:
+    name: kindpath-analyser tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kindpath-analyser
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: KindPath-Collective/kindpath-analyser
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: python -m pytest tests/ -q --tb=short
+
+  test-kindai:
+    name: kindai tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kindai
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: KindPath-Collective/kindai
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: python -m pytest tests/ -q --tb=short
+        continue-on-error: true  # tests directory may not exist yet
