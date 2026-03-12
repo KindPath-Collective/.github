@@ -1,0 +1,20 @@
+# KindPath Collective — CODEOWNERS
+# Code owners are automatically requested for review on PRs.
+# Uses GitHub Education Team plan features.
+#
+# Global: Sam owns everything
+* @S4mu3lD4v1d
+
+# Doctrine and methodology — highest sensitivity
+/kindpath-canon/      @S4mu3lD4v1d
+/kindpath-fieldkit/   @S4mu3lD4v1d
+
+# Security-sensitive paths
+/.github/workflows/   @S4mu3lD4v1d
+/kindai/              @S4mu3lD4v1d
+/kindpath-bmr/        @S4mu3lD4v1d
+/KPTH/data-capture/   @S4mu3lD4v1d
+
+# AI agent configuration
+/.github/agents/      @S4mu3lD4v1d
+/.github/copilot-instructions.md @S4mu3lD4v1d
