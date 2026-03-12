@@ -145,6 +145,22 @@ All output is proposals → DevOps Lead review → Sam approval → only then ac
 Every task — new feature, bug fix, research item, platform check — must have a
 Paperclip ticket before work begins. This is how the agentic workforce coordinates.
 
+**Step 0 — Ensure Paperclip is running and skills are loaded**
+```bash
+# Check if running
+curl -s http://localhost:3100/api/health | python3 -c "import sys,json; print(json.load(sys.stdin).get('status'))" 2>/dev/null || echo "Not running"
+
+# Start if not running
+cd /Users/sam/dev/KindPath-Collective/kindai && npx paperclipai start &
+
+# Export agent credentials (must be set in shell for heartbeat protocol)
+export PAPERCLIP_API_URL='http://localhost:3100'
+export PAPERCLIP_COMPANY_ID='21603eb6-d020-4441-85eb-908e60258409'
+export PAPERCLIP_AGENT_ID='d478b4e2-09af-486a-8626-9c54a6f440c6'
+export PAPERCLIP_API_KEY='pcp_0c3f4e925f3f8bdfd4a57664fe767b9dc97f935703086f11'
+# (These are also in /Users/sam/kindai/.env)
+```
+
 **Step 1 — Assign to the correct project**
 
 | Work type | Paperclip project |
@@ -159,22 +175,49 @@ Paperclip ticket before work begins. This is how the agentic workforce coordinat
 
 **Step 2 — Create or pick up a ticket**
 ```bash
-# Check if Paperclip is running
-curl -s http://localhost:3100/api/projects | python3 -c "import sys,json; [print(p['name']) for p in json.load(sys.stdin)]" 2>/dev/null || echo "Paperclip not running — start with: npx paperclipai start"
+# CLI context profile is pre-configured — no --company-id needed
+npx paperclipai issue list                          # see backlog
+npx paperclipai issue list --status todo            # actionable now
+npx paperclipai issue get KIN-XX                    # get issue details
+npx paperclipai issue create --title "..." --status todo --priority medium
+npx paperclipai issue checkout KIN-XX --agent-id d478b4e2-09af-486a-8626-9c54a6f440c6
 
-# First-time seed (run once — safe to re-run, skips existing projects)
-python3 /Users/sam/dev/KindPath-Collective/kindai/scripts/seed_kindpath_projects.py
-
-# Open the dashboard
+# Open dashboard
 open http://localhost:3100
 ```
 
 **Step 3 — Work the ticket, then close it**
 ```bash
-# Close a ticket via API when done
-curl -s -X PATCH http://localhost:3100/api/issues/<ISSUE_ID> \
+# Close via CLI
+npx paperclipai issue update KIN-XX --status done --comment "What was done."
+
+# Or via REST API (with required run-id header inside a heartbeat):
+curl -s -X PATCH http://localhost:3100/api/issues/<UUID> \
+  -H "Authorization: Bearer $PAPERCLIP_API_KEY" \
+  -H "X-Paperclip-Run-Id: $PAPERCLIP_RUN_ID" \
   -H 'Content-Type: application/json' \
-  -d '{"status": "done"}'
+  -d '{"status": "done", "comment": "What was done."}'
+```
+
+**Correct API Routes (not the old /api/projects — that route does not exist)**
+
+| Action | Endpoint |
+|--------|----------|
+| Health check | `GET /api/health` |
+| List issues | `GET /api/companies/:companyId/issues` |
+| Get issue | `GET /api/issues/:issueId` |
+| Update issue | `PATCH /api/issues/:issueId` |
+| Checkout task | `POST /api/issues/:issueId/checkout` |
+| Release task | `POST /api/issues/:issueId/release` |
+| Create issue | `POST /api/companies/:companyId/issues` |
+| List agents | `GET /api/companies/:companyId/agents` |
+| My identity | `GET /api/agents/me` |
+
+**Skill install (on new machine or after reinstall)**
+```bash
+cd /Users/sam/.npm/_npx/43414d9b790239bb/node_modules/@paperclipai/server
+npx paperclipai agent local-cli claude-code --company-id 21603eb6-d020-4441-85eb-908e60258409 --api-base http://localhost:3100
+# This installs 6 skills to ~/.claude/skills/ and ~/.codex/skills/
 ```
 
 **If Paperclip is not running:** note the work in HANDOVER.md and add a corresponding
@@ -250,15 +293,11 @@ TELEGRAM_BOT_TOKEN=<from @BotFather if needed>
 ### 4. Alembic Migration Verify (after #2 is done)
 Agent will handle this once Cloud Build trigger is connected.
 
-### 5. Paperclip Install (one-time, run in terminal)
-```bash
-cd /Users/sam/dev/KindPath-Collective/kindai
-npx paperclipai onboard --yes
-# Then seed all 7 projects:
-python3 scripts/seed_kindpath_projects.py
-# Open dashboard:
-open http://localhost:3100
-```
+### 5. Paperclip — ✅ DONE
+Paperclip is running at `http://localhost:3100`. Company `KindPath` (21603eb6...) is active.
+7 projects seeded. Agent skills installed at `~/.claude/skills/`. API key in `~/kindai/.env`.
+Context profile configured — `npx paperclipai issue list` works without flags.
+To restart after reboot: `cd /Users/sam/dev/KindPath-Collective/kindai && npx paperclipai start &`
 
 ---
 

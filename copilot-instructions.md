@@ -115,19 +115,87 @@ python3 ~/.kindpath/kp_memory.py remember "fact" --domain gotcha|technical|proje
 
 Some tools behave unexpectedly in this environment. Know the patterns:
 
-| Tool / Pattern | Problem | Solution |
-|----------------|---------|----------|
-| `run_in_terminal` with heredoc (`<< 'EOF'`) | Terminal "simplifies" the command — heredoc is corrupted or interleaved | Write to `/tmp/script.py` via `create_file`, then `run_in_terminal python3 /tmp/script.py` |
-| `python3 -c "..."` multiline | Same corruption | Same — use file |
-| `mcp_github_*` tools | Deferred tools; sometimes unavailable or fail silently | Use `gh` CLI: `gh issue`, `gh pr`, `gh run list`, `gh api` |
-| `run_in_terminal` large output | Returns a file path reference instead of inline output | Use `read_file` on the provided path |
-| Sequential single-file edits | Slow and easy to lose context | Use `multi_replace_string_in_file` for all multi-edit operations |
-| Editing HANDOVER.md via Python script | Fragile — goes wrong with heredoc corruption | Use `replace_string_in_file` directly on `~/.kindpath/HANDOVER.md` |
-| `grep_search` for unknown locations | Slow when file location is unknown | Use `semantic_search` first to locate, then confirm with `grep_search` |
+| Tool / Pattern | Problem | Preferred alternative |
+|----------------|---------|----------------------|
+| `run_in_terminal` heredoc `<< 'EOF'` | Terminal rewrites/corrupts heredoc every time | `create_file /tmp/script.py` then `run_in_terminal python3 /tmp/script.py` |
+| `python3 -c "..."` multiline | Same corruption — do not use | Write to `/tmp/script.py` and run it |
+| `mcp_github_*` tools | Deferred — must `tool_search_tool_regex` first; often still fail silently | `gh` CLI: `gh issue`, `gh pr`, `gh run list`, `gh api` — always faster |
+| `run_in_terminal` large output | Returns a file path reference, not inline content | `read_file` on the provided path to get actual content |
+| `npx paperclipai ... --json` | `--json` flag is inconsistently supported; often returns non-JSON | Write a `/tmp/` Python script that calls the REST API directly with `httpx`; or use CLI output and parse with `| python3 /tmp/parse.py` |
+| Sequential `replace_string_in_file` calls | Slow; context can drift between edits | `multi_replace_string_in_file` for all multi-edit operations (single call) |
+| Sequential `read_file` calls on independent files | Unnecessarily slow | Parallel reads — call multiple `read_file` in one turn |
+| Editing HANDOVER.md via Python temp script | Fragile with heredoc corruption | `replace_string_in_file` directly on `~/.kindpath/HANDOVER.md` |
+| `grep_search` without knowing file location | Slow — searches entire workspace | `semantic_search` first to find the file, then `grep_search` to confirm |
+| `run_in_terminal` for file edits | Never do this — opaque and reversibility is lost | Always use `replace_string_in_file` / `create_file` / `multi_replace_string_in_file` |
+| `tool_search_tool_regex` repeated for same tool | Waste — tool stays loaded after first search | Only search once; do not re-search for tools already returned this session |
 
-**Paperclip task routing:** Every task must have a Paperclip ticket in the correct project
-before work begins. See `kindpath.agent.md` → "Paperclip Task Routing" for project map and API.
-If Paperclip isn't running: `npx paperclipai start` then seed with `python3 kindai/scripts/seed_kindpath_projects.py`.
+**Reliable patterns (use these):**
+- Multi-file edits → `multi_replace_string_in_file` in one call
+- GitHub operations → `gh` CLI first; `mcp_github_*` only if `gh` truly can't do it
+- Large codebase discovery → `runSubagent` with `Explore` agent (thoroughness: medium)
+- Python multi-line logic → write to `/tmp/script.py` via `create_file`, then run
+- Paperclip queries → `npx paperclipai issue list` (CLI); REST API for mutations inside heartbeats
+
+---
+
+## Paperclip — Mandatory Agentic Workflow
+
+**All tasks — every feature, bug fix, research item, doc update, or platform check — must
+have a Paperclip ticket before work begins.** This is non-negotiable. The agentic workforce
+only knows what to pick up through Paperclip. If it's not ticketed, it doesn't exist.
+
+### Step 0 — Check Paperclip is running
+```bash
+curl -s http://localhost:3100/api/health 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin)['status'])" || echo "Not running — start with: cd /Users/sam/dev/KindPath-Collective/kindai && npx paperclipai start &"
+```
+
+### Step 1 — Check existing tickets before creating new ones
+```bash
+npx paperclipai issue list --status todo         # What's actionable now
+npx paperclipai issue list                       # Full backlog
+npx paperclipai issue list --q "<keyword>"       # Search by keyword
+```
+
+### Step 2 — Create a ticket if none exists
+```bash
+npx paperclipai issue create --title "..." --status todo --priority medium
+# Assign to correct project — see kindpath.agent.md Project Map
+```
+
+### Step 3 — Checkout before working, close when done
+```bash
+npx paperclipai issue checkout KIN-XX --agent-id d478b4e2-09af-486a-8626-9c54a6f440c6
+# ... do the work ...
+npx paperclipai issue update KIN-XX --status done --comment "What was done and why."
+```
+
+### Project routing map
+| Work type | Paperclip project |
+|-----------|-------------------|
+| kindai, NDIS case tools | P1: NDIS Income Infrastructure |
+| kindpath-analyser, frequency engine | P2: Music Frequency Analysis |
+| kindpath-dfte, trading, KEPE | P3: Syntropic Trading Engine |
+| kindpath-compass, emotional tools | P4: Compassionate Listening |
+| kindpath-fieldkit, placement docs | P5: Pre-Placement Practice Framework |
+| Product ideas, grants, BizDev | P6: Innovation & Growth Pipeline |
+| Website, CI/CD, community repos | P7: Platform & Community Health |
+
+**Agent identity (Claude Code, CEO role):**
+```bash
+export PAPERCLIP_API_URL='http://localhost:3100'
+export PAPERCLIP_COMPANY_ID='21603eb6-d020-4441-85eb-908e60258409'
+export PAPERCLIP_AGENT_ID='d478b4e2-09af-486a-8626-9c54a6f440c6'
+export PAPERCLIP_API_KEY='pcp_0c3f4e925f3f8bdfd4a57664fe767b9dc97f935703086f11'
+# (Also stored in /Users/sam/kindai/.env)
+```
+
+**Skill reinstall on new machine:**
+```bash
+cd /Users/sam/.npm/_npx/43414d9b790239bb/node_modules/@paperclipai/server
+npx paperclipai agent local-cli claude-code --company-id 21603eb6-d020-4441-85eb-908e60258409 --api-base http://localhost:3100
+```
+
+Full routing rules and correct API endpoints: see `kindpath.agent.md` → "Paperclip Task Routing".
 
 ---
 
