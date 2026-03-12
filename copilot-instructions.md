@@ -17,26 +17,61 @@ This takes 5 seconds and saves 20 minutes of rediscovery.
 
 ## Session Close Protocol
 
-**Before ending any session, update the todo list then close:**
+**At the end of every session, work through this checklist in order:**
 
+### 1. Collect pending items
+Review the entire session and identify:
+- Anything started but not finished (partially built features, failed tests, etc.)
+- Anything blocked on Sam's manual action (browser OAuth, merges, API keys, etc.)
+- Deprecation warnings, tech debt, or deferred decisions that were noted but not acted on
+- Paperclip seed runs, HANDOVER.md updates, or kp_memory entries that were skipped
+
+### 2. Update HANDOVER.md (via /tmp script — never heredoc)
+```python
+# /tmp/close_session.py
+with open("/Users/sam/.kindpath/HANDOVER.md", "r") as f:
+    content = f.read()
+# Add completed items to ## Completed section
+# Add new pending items to ## Active Todos
+# Update ## Last Actions with date + summary
+with open("/Users/sam/.kindpath/HANDOVER.md", "w") as f:
+    f.write(content)
+```
+
+### 3. Commit uncommitted work
 ```bash
-# Mark items done/pending, pipe-separated. Use - [x] for done, - [ ] for pending.
-python3 ~/.kindpath/kp_session.py todo "- [x] completed thing | - [ ] still pending | - [ ] other"
+# Check all repos for uncommitted changes
+for repo in .github kindai kindpath-analyser kindpath-q kindpath-dfte kindpath-bmr; do
+    cd /Users/sam/dev/KindPath-Collective/$repo && git status --short && cd -
+done
+```
 
-# Or use the granular commands:
-python3 ~/.kindpath/kp_session.py todo-done "fragment of completed item"
-python3 ~/.kindpath/kp_session.py todo-add  "New thing to track"
+### 4. Update kp_memory with new facts discovered this session
+```bash
+python3 ~/.kindpath/kp_memory.py add "key fact" --domain gotcha|technical|project --tags tag1,tag2
+```
 
-# Close and write HANDOVER.md:
+### 5. Close the session
+```bash
 python3 ~/.kindpath/kp_session.py end "Brief summary of what was accomplished"
 ```
 
+### End-of-session report to Sam
+Always cap the session with a clear summary table:
+
+| Status | Item | Owner |
+|--------|------|-------|
+| ✅ Done | What was completed this session | — |
+| 🔄 Pending (agent) | Work started, needs continuation | Agent |
+| 🔴 Blocked | Needs Sam's manual action | Sam |
+| ⚠️ Non-urgent | Noted, not acted on | — |
+
 **Rules:**
-- The to-do list lives in `~/.kindpath/HANDOVER.md` under `## Active Todos` — **not in a separate file**
-- Use `- [x]` for completed items, `- [ ]` for pending
-- Carry forward all `- [ ]` items from the previous HANDOVER.md — never silently drop unfinished work
-- Call `kp_session.py todo` mid-session when status changes, not just at the end
-- Be specific: include repo name, task ID, or file path where relevant
+- HANDOVER.md must be updated via `/tmp/script.py`, not heredoc or `python3 -c`
+- Never silently drop `- [ ]` items — carry everything forward
+- If a session ends mid-task, always note the exact insertion point / next action
+- kp_memory gets updated every session — at minimum add one `--domain technical` or `--domain gotcha` entry
+- Be specific in HANDOVER.md: include repo name, commit hash, file path where relevant
 
 ---
 
