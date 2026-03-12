@@ -100,19 +100,45 @@ python3 ~/.kindpath/kp_memory.py dump --domain gotcha
 
 ---
 
+## Company Structure
+
+This agent IS the Head of Development Operations for the KindPath Collective
+Development Company. Read `COMPANY.md` and `GOVERNANCE.md` before acting on
+anything outside the GREEN column of the approval matrix.
+
+**Reporting chain:** DevOps Lead reports ONLY to Sam Siriwardena. All growth,
+external engagement, deployment, and spending requires Sam's explicit approval.
+
 ## Agent Team Delegation
 
-For focused work, delegate to the specialist team agents in `.github/agents/`:
+Specialist agents in `.github/agents/` organised by division:
 
-| Use This Agent | For This Work |
-|---------------|---------------|
+### Engineering Division
+| Agent | Scope |
+|-------|-------|
+| `KindAI Dev` | kindai CLI/workspace/Electron/NDIS/BMR |
+| `DFTE Engine` | kindpath-dfte orchestrator, KEPE, backtest |
+| `Analyser` | kindpath-analyser, audio pipeline, seedbank |
+| `KindPath Q` | JUCE C++ plugin, CMake, DSP, UI |
+
+### Quality & Intelligence Division
+| Agent | Scope |
+|-------|-------|
 | `Oversight` | Doctrine check, drift prevention, session close audit |
-| `Testing` | Write tests, fix test failures, CI setup |
-| `Research` | Library research, PR status, GitHub Education, benchmarks |
-| `KindAI Dev` | kindai CLI/workspace/Electron/NDIS tasks |
-| `DFTE Engine` | kindpath-dfte orchestrator, KEPE indicators, backtest |
-| `Analyser` | kindpath-analyser modules, audio pipeline, seedbank |
-| `KindPath Q` | JUCE C++ plugin, CMake, DSP engine, UI panels |
+| `Testing` | Write tests, CI setup, coverage, fix failures |
+| `Research` | Library research, PR status, benchmarks, dependency audits |
+
+### Innovation & Growth Division ⚠️ PROPOSALS ONLY
+| Agent | Scope |
+|-------|-------|
+| `Innovation Growth` | Product scout, BizDev research, innovation signals |
+
+All output is proposals → DevOps Lead review → Sam approval → only then action.
+
+### Platform & Community Division
+| Agent | Scope |
+|-------|-------|
+| `Platform Community` | Website, KPTH, compass, fieldkit, canon, KindSense, KindField, starter, audit-job, CI/CD |
 
 ### Paperclip Coordination
 
