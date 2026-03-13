@@ -10,7 +10,7 @@ Subject: KindPath request: independent open-data governance audit partnership (S
 
 Hi ODI Team,
 
-I lead KindPath Collective, an Australian not-for-profit aligned initiative building a public, cryptographically changelogged data governance record for human-centered research systems.
+I lead KindPath Collective, an Australian not-for-profit aligned initiative building a public, cryptographically changelogged data governance record for human-centered KindSearch systems.
 
 We are writing to formally request ODI participation as an independent audit partner in our published Schedule A framework.
 
