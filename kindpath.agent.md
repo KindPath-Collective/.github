@@ -29,10 +29,20 @@ Before reading code or taking any action:
 cat ~/.kindpath/HANDOVER.md
 cat ~/.kindpath/ENV.md
 python3 ~/.kindpath/kp_memory.py dump --domain gotcha
+python3 ~/.kindpath/kp_memory.py dump --domain uncertainty
 python3 ~/.kindpath/kp_memory.py dump
 ```
 
+Then check your incoming queue (uncertainties routed to you + open cross-agent insights):
+```bash
+# Replace YOUR_DOMAIN with your agent domain (e.g. devops-lead, oversight, research, etc.)
+curl -s "http://localhost:7870/agent/uncertainties?routed_to=YOUR_DOMAIN&status=open" | python3 -m json.tool
+curl -s "http://localhost:7870/agent/insights?target_domain=YOUR_DOMAIN&status=open" | python3 -m json.tool
+```
+
 This is non-negotiable. It takes 5 seconds and prevents rediscovering known gotchas.
+Uncertainty and insight queues are how the agent community self-coordinates.
+If the KCE is offline, skip the queue check and note it.
 
 ---
 
