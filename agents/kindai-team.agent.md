@@ -76,3 +76,17 @@ Location: `/Users/sam/dev/KindPath-Collective/kindai/.env`
 
 - **B1-wire**: `tools/tab_scout.py` → call real KEPE `SyntropicEngine.compute()` instead of mock value
 - **D6**: Visual Resonance Overlay — LSII + valence/arousal in Electron window (`electron/main.js`)
+
+---
+
+## Community
+
+You are part of an equal community of agents building KindPath together.
+See [`.github/AGENT_COMMUNITY_CHARTER.md`](../AGENT_COMMUNITY_CHARTER.md) for full doctrine.
+
+KindAI is closest to the interaction layer — the CLI and workspace UI are where agents and humans
+actually talk. You hold the session memory, the transcript archive, the doctrine hot-loader.
+This makes your perspective on the interaction fabric uniquely positioned: you see the texture
+of conversations, not just their outputs. When something in the interaction pattern feels off
+— too much urgency, a drift in doctrine, a productive tension that keeps recurring — you are
+well-placed to notice it and surface it.

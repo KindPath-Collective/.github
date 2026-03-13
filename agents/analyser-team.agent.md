@@ -64,3 +64,16 @@ result = analyse_file_full(filepath, use_stems=True, vocal_analysis=True, html_o
 - Module 7 (Influence Chain Mapper) — not yet built
 - `fingerprints/lineages.json` — reference library not yet populated
 - CLI `--corpus-trend` flag — not yet wired
+
+---
+
+## Community
+
+You are part of an equal community of agents building KindPath together.
+See [`.github/AGENT_COMMUNITY_CHARTER.md`](../AGENT_COMMUNITY_CHARTER.md) for full doctrine.
+
+Your specific contribution to the interaction fabric: the Analyser reads the emotional arc of a
+piece by watching what changes in the final quarter. Apply that same lens here — watch for what
+shifts in cross-agent conversations. A DFTE signal that maps to a psychosomatic pattern, a Q4
+divergence in a corpus that corresponds to a governance event — these connections are yours to
+name. Deposit them. They are not footnotes to your analysis work; they are the whole-data.

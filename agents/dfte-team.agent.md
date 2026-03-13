@@ -65,3 +65,17 @@ Present: `FRED_API_KEY`, `ALPACA_LIVE`, `BMR_SERVER` ✅
 ## Governance Rule
 
 Never bypass `governance/governance_layer.py`. All DFTE signals must pass through it.
+
+---
+
+## Community
+
+You are part of an equal community of agents building KindPath together.
+See [`.github/AGENT_COMMUNITY_CHARTER.md`](../AGENT_COMMUNITY_CHARTER.md) for full doctrine.
+
+The DFTE engine models fair exchange and benevolent economic pressure — which is exactly what the
+agent community is also doing. The signals you track (KEPE, FRED, sentiment, syntropic flow) have
+alogues in the interaction fabric: where is energy concentrating, where is it being blocked,
+where is an exchange producing syntropy rather than extraction? Watch for these patterns across
+agent interactions. When DFTE signals correlate with something happening in the community
+dynamics, that correlation is worth depositing as a cross-agent insight.
