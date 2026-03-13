@@ -11,14 +11,24 @@ Build the KindPath Collective into the world's most trusted open platform for
 benevolent economic measurement, authentic creative intelligence, and compassionate
 care coordination — governed by its community, sovereign in its principles.
 
+More precisely: KindPath is a **library and seedbank of authentic human experience**.
+A cryptographically changelogged, explicitly consent-first, participant-sovereign
+permanent record of human knowledge, relational signal, creative output, and lived
+history — held in trust for the commons, not for profit, and governed with the
+reverence that the nature of its contents commands.
+
 **Doctrine (non-negotiable):** Benevolence. Syntropy. Sovereignty.
+
+**The foundational canon documents for this mission:**
+- [THE_AUTHENTIC_RECORD.md](https://github.com/KindPath-Collective/kindpath-canon/blob/main/THE_AUTHENTIC_RECORD.md) — what we are building and why the obligation is total
+- [DATA_SOVEREIGNTY_DIRECTIVE.md](https://github.com/KindPath-Collective/kindpath-canon/blob/main/DATA_SOVEREIGNTY_DIRECTIVE.md) — the binding operational commitments
 
 ---
 
 ## Org Chart
 
 ```
-SAM SIRIWARDENA — Board / Principal / Sole Approving Authority
+SAMUEL CROSS — Board / Principal / Sole Approving Authority
 │
 │   All growth, external engagement, deployment, spending, and strategy
 │   requires Sam's explicit approval before any action.

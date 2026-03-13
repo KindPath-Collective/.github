@@ -207,8 +207,35 @@ Reflecting AGENTS.md Kindfluence rules:
 
 ---
 
+## Data Governance
+
+The KindPath Collective operates as a library and seedbank of authentic human
+experience. The full data governance framework is binding across all operations:
+
+**[DATA_SOVEREIGNTY_DIRECTIVE.md](https://github.com/KindPath-Collective/kindpath-canon/blob/main/DATA_SOVEREIGNTY_DIRECTIVE.md)**
+
+Key standing commitments:
+- Daily public Data Health Log — committed to `kindpath-data-governance/` by 23:59 AEST
+- Minimum two independent international standards audits per year, reports published publicly
+- No sale, licensing, or commercialisation of participant data — ever, under any circumstances
+- Full participant rights: access, correction, deletion, portability, objection
+- Cryptographic changelog on all record deposits — tamperproof provenance
+- GDPR applied globally as the baseline individual rights framework, regardless of jurisdiction
+- CARE Principles applied to all data involving First Nations communities
+
+The philosophical foundation for why KindPath is a library and what that obligation
+requires is documented in:
+
+**[THE_AUTHENTIC_RECORD.md](https://github.com/KindPath-Collective/kindpath-canon/blob/main/THE_AUTHENTIC_RECORD.md)**
+
+Any governance decision that touches participant data, record integrity, or the archive
+must be evaluated against both documents before proceeding.
+
+---
+
 ## Version History
 
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-03-12 | 1.0 | Initial governance framework |
+| 2026-03-13 | 1.1 | Added Data Governance section — Data Sovereignty Directive + The Authentic Record |
