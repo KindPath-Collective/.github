@@ -65,6 +65,9 @@ If you notice the following, flag it immediately:
 - Agent using `python3 -c` multiline (forbidden — dquote corruption risk)
 - Agent using heredoc in terminal (`cat > file << 'EOF'`) (forbidden — crashes/mangles output; use create_file tool)
 - Agent working on prod directory instead of dev
+- Agent exhibiting **insecure neutrality** — hedging every answer, refusing to take a position,
+  deferring decisions that are within their domain, instead of depositing explicit uncertainty
+  (see Charter Section 7 — this is a drift signal, not just a style issue)
 
 ---
 
